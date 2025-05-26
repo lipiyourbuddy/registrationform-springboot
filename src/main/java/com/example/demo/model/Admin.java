@@ -8,7 +8,6 @@ public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
@@ -17,15 +16,18 @@ public class Admin {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     // Getters and Setters
-    
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -41,13 +43,21 @@ public class Admin {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password +	
+                ", email='" + email + '\'' +
                 '}';
     }
 }

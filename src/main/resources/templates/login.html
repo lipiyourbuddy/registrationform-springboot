@@ -1,25 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+    <title>Admin OTP Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Login</h2>
-    <form th:action="@{/login}" th:object="${admin}" method="post">
+    <h2>Admin OTP Login</h2>
+
+    <!-- Step 1: Initial login form -->
+    <form th:action="@{/send-otp}" th:object="${otpLogin}" method="post" th:if="${otpSent == null}">
         <div class="mb-3">
             <label>Username:</label>
-            <input type="text" th:field="*{username}" class="form-control"/>
+            <input type="text" th:field="*{username}" class="form-control" required />
         </div>
         <div class="mb-3">
             <label>Password:</label>
-            <input type="password" th:field="*{password}" class="form-control"/>
+            <input type="password" th:field="*{password}" class="form-control" required />
         </div>
+        <div class="mb-3">
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" class="form-control" required />
+        </div>
+
         <div class="mb-3 text-danger" th:if="${error}">
             <p th:text="${error}"></p>
         </div>
-        <button class="btn btn-primary">Login</button>
+
+        <button class="btn btn-primary">Generate OTP</button>
+    </form>
+
+    <!-- Step 2: OTP verification form -->
+    <form th:action="@{/verify-otp}" th:object="${otpLogin}" method="post" th:if="${otpSent}">
+        <input type="hidden" th:field="*{username}" />
+        <input type="hidden" th:field="*{password}" />
+        <input type="hidden" th:field="*{email}" />
+
+        <div class="mb-3">
+            <label>Enter OTP:</label>
+            <input type="text" th:field="*{otp}" class="form-control" required />
+        </div>
+
+        <!-- <div class="alert alert-info"> 
+            Your OTP is: <span th:text="${generatedOtp}"></span>
+        </div> -->
+
+        <div class="text-danger" th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
+
+        <button class="btn btn-success">Verify OTP</button>
+    </form>
+
+    <!-- Step 3: Regenerate OTP button -->
+    <form th:action="@{/send-otp}" th:object="${otpLogin}" method="post" th:if="${otpSent}">
+        <input type="hidden" th:field="*{username}" />
+        <input type="hidden" th:field="*{password}" />
+        <input type="hidden" th:field="*{email}" />
+        <button class="btn btn-warning mt-3">Regenerate OTP</button>
     </form>
 </div>
 </body>
